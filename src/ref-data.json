@@ -1,0 +1,12 @@
+
+{
+"categoryData":[
+        { "Category": "Rent", "Group": "Office", "Id": "1" },
+        { "Category": "EB", "Group": "Office", "Id": "2" },
+        { "Category": "Petrol", "Group": "Office", "Id": "3" },
+        { "Category": "Food", "Group": "Office", "Id": "4" },
+        { "Category": "Flower", "Group": "Office", "Id": "5" },
+        { "Category": "Salary", "Group": "Office", "Id": "6" },
+        { "Category": "Other", "Group": "Others", "Id": "7" }        
+    ]
+}

@@ -1,4 +1,15 @@
 import { Button, ButtonGroup, Container, Table } from "reactstrap";
+import {
+  ColumnDirective,
+  ColumnsDirective,
+  Filter,
+  GridComponent,
+  Group,
+  Inject,
+  Page,
+  PageSettingsModel,
+  Sort,
+} from "@syncfusion/ej2-react-grids";
 import React, { Component } from "react";
 
 import AppNavbar from "./AppNavbar";
@@ -82,6 +93,40 @@ class ExpenseList extends Component {
             </Button>
           </div>
           <h3>Expense List</h3>
+          <GridComponent dataSource={expenses}>
+            <ColumnsDirective>
+              <ColumnDirective
+                headerText="Date"
+                field="expenseDate"
+                width="50"
+                format="yMd"
+              />
+              <ColumnDirective
+                field="category"
+                headerText="Category"
+                width="100"
+              />
+              <ColumnDirective
+                headerText="Amount"
+                field="amount"
+                width="50"
+                format="n2"
+                textAlign="Right"
+              />
+              <ColumnDirective
+                headerText="Description"
+                field="description"
+                width="100"
+              />
+              <ColumnDirective
+                headerText="CreatedBy"
+                field="createdBy"
+                width="100"
+              />
+            </ColumnsDirective>
+            <Inject services={[Page, Sort, Filter, Group]} />
+          </GridComponent>
+          {/* 
           <Table className="mt-4">
             <thead>
               <tr>
@@ -93,7 +138,7 @@ class ExpenseList extends Component {
               </tr>
             </thead>
             <tbody>{expenseList}</tbody>
-          </Table>
+          </Table> */}
         </Container>
       </div>
     );

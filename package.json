@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@syncfusion/ej2-react-buttons": "^19.1.63",
+    "@syncfusion/ej2-react-calendars": "^19.1.66",
+    "@syncfusion/ej2-react-dropdowns": "^19.1.67",
+    "@syncfusion/ej2-react-grids": "^19.1.67",
+    "@syncfusion/ej2-react-inputs": "^19.1.67",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
