@@ -8,5 +8,8 @@
         { "Category": "Flower", "Group": "Office", "Id": "5" },
         { "Category": "Salary", "Group": "Office", "Id": "6" },
         { "Category": "Other", "Group": "Others", "Id": "7" }        
+    ],
+    "categoryList":[
+        "Rent","EB","Petrol","Food","Flower","Salary","Other" ,"category - updated"
     ]
 }

@@ -20,6 +20,7 @@ class ExpenseList extends Component {
     super(props);
     this.state = { expenses: [], isLoading: true };
     this.remove = this.remove.bind(this);
+    this.template = this.gridTemplate;
   }
 
   componentDidMount() {
@@ -45,43 +46,27 @@ class ExpenseList extends Component {
     });
   }
 
+  gridTemplate(props) {
+    return (
+      <div className="image">
+        <Button
+          size="sm"
+          color="primary"
+          tag={Link}
+          to={"/expenses/" + props.id}
+        >
+          Edit
+        </Button>
+      </div>
+    );
+  }
+
   render() {
     const { expenses, isLoading } = this.state;
 
     if (isLoading) {
       return <p>Loading...</p>;
     }
-
-    const expenseList = expenses.map((expense) => {
-      return (
-        <tr key={expense.id}>
-          <td style={{ whiteSpace: "nowrap" }}>{expense.expenseDate}</td>
-          <td>{expense.category}</td>
-          <td>{expense.amount}</td>
-          <td>{expense.description}</td>
-          <td>{expense.createdBy}</td>
-          <td>
-            <ButtonGroup>
-              <Button
-                size="sm"
-                color="primary"
-                tag={Link}
-                to={"/expenses/" + expense.id}
-              >
-                Edit
-              </Button>
-              <Button
-                size="sm"
-                color="danger"
-                onClick={() => this.remove(expense.id)}
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
-          </td>
-        </tr>
-      );
-    });
 
     return (
       <div>
@@ -122,6 +107,12 @@ class ExpenseList extends Component {
                 headerText="CreatedBy"
                 field="createdBy"
                 width="100"
+              />
+              <ColumnDirective
+                headerText="Actions"
+                width="180"
+                template={this.template}
+                textAlign="Center"
               />
             </ColumnsDirective>
             <Inject services={[Page, Sort, Filter, Group]} />

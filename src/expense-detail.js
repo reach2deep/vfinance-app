@@ -16,6 +16,7 @@ import { setCulture, setCurrencyCode } from "@syncfusion/ej2-base";
 import AppNavbar from "./AppNavbar";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
+import { Query } from "@syncfusion/ej2-data";
 
 class ExpenseDetail extends Component {
   newExpense = {
@@ -29,9 +30,12 @@ class ExpenseDetail extends Component {
     isActive: true,
   };
 
+  categoryObj: any;
   categoryData: { [key: string]: Object }[] = data["categoryData"];
   // map the groupBy field with Category column
   groupFields: Object = { groupBy: "Group", text: "Category", value: "Id" };
+
+  categoryList: string[] = data["categoryList"];
 
   constructor(props) {
     super(props);
@@ -40,6 +44,7 @@ class ExpenseDetail extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onCategoryChange = this.onCategoryChange.bind(this);
     // console.log(this.categoryData);
   }
 
@@ -59,6 +64,9 @@ class ExpenseDetail extends Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
+
+    console.log(event.target.value);
+
     let item = { ...this.state.item };
     item[name] = value;
     this.setState({ item });
@@ -74,8 +82,14 @@ class ExpenseDetail extends Component {
     event.preventDefault();
     const { item } = this.state;
 
-    await fetch(`http://localhost:5000/api/Expense`, {
-      method: item.id !== 0 ? "PUT" : "POST",
+    const api =
+      "http://localhost:5000/api/Expense" +
+      (item.id !== 0 ? "/" + item.id : "");
+
+    console.log(api);
+    console.log(JSON.stringify(item));
+    await fetch(api, {
+      method: item.id || item.id !== 0 ? "PUT" : "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -84,6 +98,40 @@ class ExpenseDetail extends Component {
     });
     this.props.history.push("/expenses");
   }
+
+  onCategoryChange(params) {
+    // query the data source based on state DropDownList selected value
+    console.log("onCategoryChange" + JSON.stringify(params.itemData.text));
+
+    // let selcat = this.categoryData.Query.Where("Id", "equal", this.Category);
+    // console.log(this.item.category);
+    // this.categoryObj = new Query().where("Id", "equal", this.categoryData);
+    // console.log(
+    //   (this.props.dataSource = new Query().where(
+    //     "Id",
+    //     "equal",
+    //     this.categoryData.Category
+    //   ))
+    // );
+
+    let item = { ...this.state.item };
+    console.log(JSON.stringify(item));
+    console.log(JSON.stringify(item["category"]));
+
+    item["category"] = params.itemData.text;
+    this.setState({ item });
+    item["category"] = params.itemData.text;
+    console.log(JSON.stringify(item));
+
+    // console.log(this.categoryObj);
+  }
+
+  handleCategoryChange = (event) => {
+    console.log(event.target.value);
+    this.setState({
+      value: event.target.value,
+    });
+  };
 
   render() {
     const { item } = this.state;
@@ -125,8 +173,18 @@ class ExpenseDetail extends Component {
                 onChange={this.handleChange}
                 autoComplete="category"
               /> */}
-
               <DropDownListComponent
+                name="category"
+                id="category"
+                dataSource={this.categoryList}
+                placeholder="Category"
+                value={item.category}
+                text={item.category}
+                change={this.onCategoryChange}
+                cssClass="e-outline"
+                floatLabelType="Auto"
+              />
+              {/* <DropDownListComponent
                 name="category"
                 id="category"
                 dataSource={this.categoryData}
@@ -135,7 +193,10 @@ class ExpenseDetail extends Component {
                 placeholder="Select a Category"
                 placeholder="Category"
                 cssClass="e-outline"
-              />
+                value={item.category || ""}
+                text={item.category || ""}
+                change={this.onCategoryChange}
+              /> */}
               {/* <TextBoxComponent
                 type="text"
                 name="category"
