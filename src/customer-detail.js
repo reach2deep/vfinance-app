@@ -79,8 +79,13 @@ class CustomerDetail extends Component {
     event.preventDefault();
     const { item } = this.state;
 
-    await fetch(`http://localhost:5000/api/Customer`, {
-      method: item.id !== 0 ? "PUT" : "POST",
+    const api =
+      "http://localhost:5000/api/Customer" +
+      (item.id !== 0 ? "/" + item.id : "");
+
+    console.log(api);
+    await fetch(api, {
+      method: item.id || item.id !== 0 ? "PUT" : "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

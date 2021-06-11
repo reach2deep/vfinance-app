@@ -22,20 +22,28 @@ import { Link } from "react-router-dom";
 class CustomerList extends Component {
   constructor(props) {
     super(props);
+
     this.state = { customers: [], isLoading: true };
     this.remove = this.remove.bind(this);
     this.template = this.gridTemplate;
-    this.editItem = this.editItem.bind(this);
-  }
-
-  editItem(arg) {
-    console.log(arg);
-  }
-
-  commandClick(args) {
-    if (this.grid) {
-      alert(JSON.stringify(args.rowData));
-    }
+    this.commands = [
+      {
+        type: "Edit",
+        buttonOption: { iconCss: " e-icons e-edit", cssClass: "e-flat" },
+      },
+      {
+        type: "Delete",
+        buttonOption: { iconCss: "e-icons e-delete", cssClass: "e-flat" },
+      },
+      {
+        type: "Save",
+        buttonOption: { iconCss: "e-icons e-update", cssClass: "e-flat" },
+      },
+      {
+        type: "Cancel",
+        buttonOption: { iconCss: "e-icons e-cancel-icon", cssClass: "e-flat" },
+      },
+    ];
   }
 
   componentDidMount() {
@@ -62,33 +70,17 @@ class CustomerList extends Component {
       this.setState({ customers: updatedCustomers });
     });
   }
-
-  // gridTemplate(props) {
-  //   // //var src = "src/grid/images/" + props.EmployeeID + ".png";
-  //   // return (
-  //   //   // <div className="image">
-  //   //   //   <img src={src} alt={props.EmployeeID} />
-  //   //   // </div>
-  //   <ButtonComponent cssClass="e-warning" onClick={() => alert("test")}>
-  //     Edit
-  //   </ButtonComponent>;
-  //   //   // <Button
-  //   //   //   size="sm"
-  //   //   //   color="primary"
-  //   //   //   tag={Link}
-  //   //   //   to={"/customers/" + customer.id}
-  //   //   // >
-  //   //   //   Edit
-  //   //   // </Button>
-  //   // );
-  // }
-
   gridTemplate(props) {
-    // var src = "src/grid/images/" + props.EmployeeID + ".png";
-    alert(props);
     return (
       <div className="image">
-        <p>{props.Id}</p>
+        <Button
+          size="sm"
+          color="primary"
+          tag={Link}
+          to={"/customers/" + props.id}
+        >
+          Edit
+        </Button>
       </div>
     );
   }
@@ -103,41 +95,15 @@ class CustomerList extends Component {
       <div>
         <AppNavbar />
         <Container fluid>
-          <div className="control-pane">
-            <DialogComponent
-              // ref={dialog => (this.dialogInstance = dialog)}
-              visible={false}
-              // close={this.dialogClose}
-              showCloseIcon={true}
-              isModal={true}
-              width="70%"
-              header="Dialog with Button"
-              height="200px"
-            >
-              <div>
-                <ButtonComponent
-                  id="btn"
-                  content="Button"
-                  onClick={() => alert("test")}
-                />
-              </div>
-            </DialogComponent>
-          </div>
-
           <div className="float-right">
             <Button color="success" tag={Link} to="/customers/new">
               Add Customer
             </Button>
           </div>
           <h3>Customer List</h3>
+
           <GridComponent dataSource={customers}>
             <ColumnsDirective>
-              <ColumnDirective
-                headerText="Action"
-                width="180"
-                template={this.template()}
-                textAlign="Center"
-              />
               <ColumnDirective
                 headerText="Name"
                 field="displayName"
@@ -161,6 +127,12 @@ class CustomerList extends Component {
                 headerText="CreatedBy"
                 field="createdBy"
                 width="100"
+              />
+              <ColumnDirective
+                headerText="Actions"
+                width="180"
+                template={this.template}
+                textAlign="Center"
               />
             </ColumnsDirective>
             <Inject services={[Page, Sort, Filter, Group]} />
