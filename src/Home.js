@@ -19,6 +19,10 @@ class Home extends Component {
           <Button color="link">
             <Link to="/customers">Customers</Link>
           </Button>
+
+          <Button color="link">
+            <Link to="/loans">Loans</Link>
+          </Button>
         </Container>
       </div>
     );

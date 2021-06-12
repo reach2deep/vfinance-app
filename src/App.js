@@ -7,6 +7,7 @@ import CustomerList from "./customer-list";
 import ExpenseDetail from "./expense-detail";
 import ExpenseList from "./expense-list";
 import Home from "./Home";
+import LoanList from "./loans-list";
 import customerDetail from "./customer-detail";
 
 class App extends Component {
@@ -19,6 +20,8 @@ class App extends Component {
           <Route path="/expenses/:id" component={ExpenseDetail} />
           <Route path="/customers" exact={true} component={CustomerList} />
           <Route path="/customers/:id" component={customerDetail} />
+          <Route path="/loans" exact={true} component={LoanList} />
+          <Route path="/loans/:id" component={customerDetail} />
         </Switch>
       </Router>
     );

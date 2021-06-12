@@ -15,10 +15,10 @@ import React, { Component } from "react";
 import AppNavbar from "./AppNavbar";
 import { Link } from "react-router-dom";
 
-class ExpenseList extends Component {
+class LoanList extends Component {
   constructor(props) {
     super(props);
-    this.state = { expenses: [], isLoading: true };
+    this.state = { loans: [], isLoading: true };
     this.remove = this.remove.bind(this);
     this.template = this.gridTemplate;
   }
@@ -26,43 +26,36 @@ class ExpenseList extends Component {
   componentDidMount() {
     this.setState({ isLoading: true });
 
-    fetch("http://localhost:5000/api/Expense")
+    fetch("http://localhost:5000/api/Loan")
       .then((response) => response.json())
-      .then((data) =>
-        this.setState({ expenses: data.result, isLoading: false })
-      );
+      .then((data) => this.setState({ loans: data.result, isLoading: false }));
   }
 
   async remove(id) {
-    await fetch(`http://localhost:5000/api/Expense/${id}`, {
+    await fetch(`http://localhost:5000/api/Loan/${id}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
     }).then(() => {
-      let updatedExpenses = [...this.state.expenses].filter((i) => i.id !== id);
-      this.setState({ expenses: updatedExpenses });
+      let updatedLoans = [...this.state.loans].filter((i) => i.id !== id);
+      this.setState({ loans: updatedLoans });
     });
   }
 
   gridTemplate(props) {
     return (
       <div className="image">
-        <Button
-          size="sm"
-          color="primary"
-          tag={Link}
-          to={"/expenses/" + props.id}
-        >
-          Edit
+        <Button size="sm" color="primary" tag={Link} to={"/loans/" + props.id}>
+          Details
         </Button>
       </div>
     );
   }
 
   render() {
-    const { expenses, isLoading } = this.state;
+    const { loans, isLoading } = this.state;
 
     if (isLoading) {
       return <p>Loading...</p>;
@@ -73,37 +66,54 @@ class ExpenseList extends Component {
         <AppNavbar />
         <Container fluid>
           <div className="float-right">
-            <Button color="success" tag={Link} to="/expenses/new">
-              Add Expense
+            <Button color="success" tag={Link} to="/loans/new">
+              Add Loan
             </Button>
           </div>
-          <h3>Expense List</h3>
-          <GridComponent dataSource={expenses}>
+          <h3>Loan List</h3>
+          <GridComponent dataSource={loans}>
             <ColumnsDirective>
               <ColumnDirective
-                headerText="Date"
-                field="expenseDate"
+                headerText="Loan #"
+                field="loanNumber"
                 width="50"
+              />
+              <ColumnDirective
+                headerText="Loan Date"
+                field="loanDate"
+                width="100"
                 type="datetime"
                 format="dd/MM/yyyy"
               />
+
               <ColumnDirective
-                field="category"
-                headerText="Category"
-                width="100"
+                headerText="Customer"
+                field="loanNumber"
+                width="50"
               />
+
               <ColumnDirective
-                headerText="Amount"
-                field="amount"
+                headerText="Loan Amount"
+                field="principalAmount"
                 width="50"
                 format="n2"
                 textAlign="Right"
               />
               <ColumnDirective
-                headerText="Description"
-                field="description"
-                width="100"
+                headerText="Total Paid"
+                field="totalPaidAmount"
+                width="50"
+                format="n2"
+                textAlign="Right"
               />
+              <ColumnDirective
+                headerText="Balance"
+                field="balanceAmount"
+                width="50"
+                format="n2"
+                textAlign="Right"
+              />
+              <ColumnDirective headerText="Notes" field="notes" width="100" />
               <ColumnDirective
                 headerText="CreatedBy"
                 field="createdBy"
@@ -118,23 +128,10 @@ class ExpenseList extends Component {
             </ColumnsDirective>
             <Inject services={[Page, Sort, Filter, Group]} />
           </GridComponent>
-          {/* 
-          <Table className="mt-4">
-            <thead>
-              <tr>
-                <th width="20%">Date</th>
-                <th width="20%">Category</th>
-                <th width="10%">Amount</th>
-                <th>Description</th>
-                <th>Created By</th>
-              </tr>
-            </thead>
-            <tbody>{expenseList}</tbody>
-          </Table> */}
         </Container>
       </div>
     );
   }
 }
 
-export default ExpenseList;
+export default LoanList;
